@@ -23,7 +23,7 @@ public class UsersResource {
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllusers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size){
 
-        Page<Users> user = userService.getAllUsers(page, 50);
+        Page<Users> user = userService.getAllUsers(page, size);
 
         List<UserDTO> userDTOS = user.stream().map(x-> new UserDTO(x.getName(), x.getPassword(), x.getEmail())).toList();
 

@@ -1,4 +1,6 @@
 package com.buccodev.contact_book.dto;
 
-public record UserDTO(String name, String password, String email) {
+import java.util.List;
+
+public record UserDTO(String name, String password, String email, List<ContactDTO> contacts) {
 }

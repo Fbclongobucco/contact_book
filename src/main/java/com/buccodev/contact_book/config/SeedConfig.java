@@ -29,7 +29,7 @@ public class SeedConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        for( int i = 0; i < 100; i++ ){
+        for( int i = 0; i < 12; i++ ){
 
             Users users = new Users(null, faker.name().name(), faker.internet().password(), faker.internet().emailAddress()+i);
 
@@ -40,9 +40,12 @@ public class SeedConfig implements CommandLineRunner {
 
                 contact.setUsers(users);
 
+
                 contactRepository.save(contact);
 
                 users.getContacts().add(contact);
+
+                userRepository.save(users);
             }
 
         }

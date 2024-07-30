@@ -3,7 +3,9 @@ package com.buccodev.contact_book.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,7 +28,7 @@ public class Users implements Serializable {
     private String password;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-    private Set<Contact> contacts = new HashSet<>();
+    private List<Contact> contacts = new ArrayList<>();
 
     public Users(){
     }
@@ -70,7 +72,7 @@ public class Users implements Serializable {
         this.password = password;
     }
 
-    public Set<Contact> getContacts() {
+    public List<Contact> getContacts() {
         return contacts;
     }
 

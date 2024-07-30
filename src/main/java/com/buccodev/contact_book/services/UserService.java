@@ -1,5 +1,6 @@
 package com.buccodev.contact_book.services;
 
+import com.buccodev.contact_book.dto.ContactDTO;
 import com.buccodev.contact_book.dto.UserDTO;
 import com.buccodev.contact_book.entities.Users;
 import com.buccodev.contact_book.repository.UserRepository;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -44,7 +47,9 @@ public class UserService {
 
             var user =  userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
 
-        return new UserDTO(user.getName(), user.getPassword(), user.getEmail());
+           List<ContactDTO> contactDTOS = user.getContacts().stream().map(x -> new ContactDTO(x.getName(), x.getNumber())).toList();
+
+        return new UserDTO(user.getName(), user.getPassword(), user.getEmail(), contactDTOS);
     }
 
     public void updateUser(Long id, UserDTO userDTO){
@@ -80,11 +85,14 @@ public class UserService {
 
     }
 
-    public Page<Users> getAllUsers(Integer page, Integer size){
+    public List<UserDTO> getAllUsers(Integer page, Integer size){
 
         Pageable pageable = PageRequest.of(page, size);
 
-        return userRepository.findAll(pageable);
+        Page<Users> users = userRepository.findAll(pageable);
+
+        return users.stream().map(x -> new UserDTO(x.getName(), x.getPassword(), x.getEmail(), x.getContacts().stream()
+                .map(c -> new ContactDTO(c.getName(), c.getNumber())).toList())).toList();
 
     }
 
